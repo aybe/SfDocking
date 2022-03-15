@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Prism.Regions;
@@ -22,6 +24,44 @@ public class DocumentRegionActiveAwareBehavior : RegionBehavior, IHostAwareRegio
         container.AddTabDocumentAtLast = true;
 
         container.ActiveDocumentChanged += OnActiveDocumentChanged;
+
+        Region.ActiveViews.CollectionChanged += RegionActiveViewsCollectionChanged;
+    }
+
+    private void RegionActiveViewsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        var manager = HostControl as DockingManager ?? throw new InvalidCastException();
+
+        switch (e.Action)
+        {
+            case NotifyCollectionChangedAction.Add:
+            {
+                foreach (var element in e.NewItems?.Cast<FrameworkElement>() ?? throw new NullReferenceException())
+                {
+                    var state = DockingManager.GetState(element);
+
+                    switch (state)
+                    {
+                        case DockState.Dock:
+                            throw new NotImplementedException();
+                        case DockState.Float:
+                            throw new NotImplementedException();
+                        case DockState.Hidden:
+                            DockingManager.SetState(element, DockState.Document);
+                            break;
+                        case DockState.AutoHidden:
+                            throw new NotImplementedException();
+                        case DockState.Document:
+                            manager.ActiveWindow = element;
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+
+                break;
+            }
+        }
     }
 
     private void OnActiveDocumentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
