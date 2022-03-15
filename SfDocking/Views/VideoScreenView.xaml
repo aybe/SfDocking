@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="SfDocking.Views.VideoScreenView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:viewModels="clr-namespace:SfDocking.ViewModels"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:VideoScreenViewModel}"
+             syncfusion:DockingManager.Header="Video Screen"
+             syncfusion:DockingManager.State="Document">
+    <Grid>
+        <TextBlock Text="{Binding Description}" />
+    </Grid>
+</UserControl>
